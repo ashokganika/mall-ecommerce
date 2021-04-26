@@ -1,0 +1,9 @@
+.error {
+  color: red;
+  margin: 15px 0;
+}
+
+.shopformContainer {
+  display: flex;
+  flex-direction: column;
+}

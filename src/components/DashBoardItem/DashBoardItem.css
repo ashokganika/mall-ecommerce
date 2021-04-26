@@ -1,0 +1,18 @@
+.dashboard-item-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 35px 0;
+}
+
+.dashboard-item-container h3 {
+  color: #f45b5b;
+  margin-bottom: 10px;
+}
+
+.item-image-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}

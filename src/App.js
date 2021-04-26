@@ -1,24 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import { Provider } from "react-redux";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import ErrorBoundary from "./components/ErrorBoundry";
+import store from "./redux/store";
+import { ToastContainer } from "react-toastify";
+import AddMall from "./Screens/AddMall/AddMall";
+import DashBoard from "./Screens/DashBoard/DashBoard";
+import MallDetail from "./Screens/MallDetail/MallDetail";
+import AddShop from "./Screens/AddShop/AddShop";
+import "react-toastify/dist/ReactToastify.css";
+import EditMall from "./Screens/EditMall/EditMall";
+import AdminAllMalls from "./Screens/AdminAllMalls/AdminAllMalls";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Provider store={store}>
+        <ErrorBoundary>
+          <BrowserRouter>
+            <Switch>
+              <Route exact path="/dashboard" component={DashBoard} />
+              <Route exact path="/add-mall" component={AddMall} />
+              <Route exact path="/admin-all-malls" component={AdminAllMalls} />
+              <Route exact path="/mall-detail/:mallId" component={MallDetail} />
+              <Route exact path="/mall/add-shop/:mallId" component={AddShop} />
+              <Route
+                exact
+                path="/mall/edit-mall/:mallId"
+                component={EditMall}
+              />
+            </Switch>
+          </BrowserRouter>
+        </ErrorBoundary>
+        <ToastContainer />
+      </Provider>
+    </>
   );
 }
 

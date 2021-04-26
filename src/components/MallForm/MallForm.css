@@ -1,0 +1,16 @@
+.mallForm {
+  display: flex;
+}
+
+.image-detail-action {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.image-delete-action {
+  color: red;
+  font-size: 18px;
+  margin-left: 20px;
+  cursor: pointer;
+}

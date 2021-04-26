@@ -1,0 +1,30 @@
+.navbar {
+  display: flex;
+  background-color: white;
+  justify-content: space-around;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.171);
+  height: 70px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.item {
+  margin: 0 20px;
+  color: rgb(0, 47, 255);
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.item:hover {
+  color: rgb(34, 0, 255);
+  /* background-color: rgba(0, 0, 0, 0.082); */
+}
+
+.logo {
+  font-size: 30px;
+}

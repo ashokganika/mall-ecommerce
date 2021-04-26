@@ -1,0 +1,27 @@
+.admin-all-malls {
+  margin: 60px 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-new-mall-btn {
+  width: 100%;
+  margin: 20px 0px 20px 0px;
+}
+
+.mall-list {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  width: 100%;
+  row-gap: 40px;
+  column-gap: 40px;
+}
+
+.allmall-heading {
+  width: 100%;
+  color: #f45b5b;
+  font-weight: bold;
+  margin: 10px 0;
+}

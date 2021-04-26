@@ -1,0 +1,19 @@
+.dashboard-container {
+  margin: 75px 67px;
+}
+
+.view-all {
+  text-align: right;
+  margin-top: 10px;
+  width: 100%;
+  cursor: pointer;
+}
+
+.view-all span {
+  /* border-bottom: 1px solid blue; */
+  color: rgb(2, 19, 255);
+  transition: all 0.3s;
+}
+.view-all span:hover {
+  border-bottom: 1px solid blue;
+}

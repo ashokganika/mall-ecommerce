@@ -1,0 +1,22 @@
+.search-container {
+  position: relative;
+  background-color: blue;
+  width: auto;
+  display: inline-block;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.search {
+  padding: 16px 30px;
+  outline: none;
+  font-size: 16px;
+  border: none;
+
+  background-color: #f0f0f0;
+}
+.search-img {
+  position: absolute;
+  top: 32%;
+  right: 5px;
+}
