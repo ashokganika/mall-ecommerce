@@ -17,3 +17,9 @@
 .view-all span:hover {
   border-bottom: 1px solid blue;
 }
+
+.search-malls {
+  margin: 50px auto;
+  /* width: 100%; */
+  text-align: center;
+}

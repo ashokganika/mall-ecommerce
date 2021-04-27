@@ -4,12 +4,15 @@ import ErrorBoundary from "./components/ErrorBoundry";
 import store from "./redux/store";
 import { ToastContainer } from "react-toastify";
 import AddMall from "./Screens/AddMall/AddMall";
-import DashBoard from "./Screens/DashBoard/DashBoard";
+import AdminDashBoard from "./Screens/AdminDashBoard/AdminDashBoard";
 import MallDetail from "./Screens/MallDetail/MallDetail";
 import AddShop from "./Screens/AddShop/AddShop";
-import "react-toastify/dist/ReactToastify.css";
 import EditMall from "./Screens/EditMall/EditMall";
 import AdminAllMalls from "./Screens/AdminAllMalls/AdminAllMalls";
+import AdminShopDetail from "./Screens/AdminShopDetail/AdminShopDetail";
+import EditShop from "./Screens/EditShop/EditShop";
+import HomePage from "./Screens/HomePage/HomePage";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -18,11 +21,35 @@ function App() {
         <ErrorBoundary>
           <BrowserRouter>
             <Switch>
-              <Route exact path="/dashboard" component={DashBoard} />
-              <Route exact path="/add-mall" component={AddMall} />
-              <Route exact path="/admin-all-malls" component={AdminAllMalls} />
-              <Route exact path="/mall-detail/:mallId" component={MallDetail} />
-              <Route exact path="/mall/add-shop/:mallId" component={AddShop} />
+              <Route exact path="/" component={HomePage} />
+              <Route exact path="/admin/dashboard" component={AdminDashBoard} />
+              <Route exact path="/admin/add-mall" component={AddMall} />
+              {/* <Route exact path="/admin/all-shops" component={AdminAllShop} /> */}
+              <Route
+                exact
+                path="/admin/admin-all-malls"
+                component={AdminAllMalls}
+              />
+              <Route
+                exact
+                path="/admin/mall-detail/:mallId"
+                component={MallDetail}
+              />
+              <Route
+                exact
+                path="/admin/mall/add-shop/:mallId"
+                component={AddShop}
+              />
+              <Route
+                exact
+                path="/admin/edit-shop/:mallId:/shopId"
+                component={EditShop}
+              />
+              <Route
+                exact
+                path="/admin/shop-detail/:mallId/:shopId"
+                component={AdminShopDetail}
+              />
               <Route
                 exact
                 path="/mall/edit-mall/:mallId"
