@@ -31,7 +31,6 @@ function DashBoard({ history, match }) {
     arr.push({ ...item.shops[0], mallId: item.id });
     return arr;
   }, []);
-  console.log(shopFiltered);
 
   useEffect(() => {
     const findMall = async () => {
@@ -70,13 +69,15 @@ function DashBoard({ history, match }) {
         <DashBoardItem title="Malls" data={filterMall} />
         <div
           className="view-all"
-          onClick={() => history.push("/admin-all-malls")}
+          onClick={() => history.push("/admin/admin-all-malls")}
         >
           <span>View All</span>
         </div>
         <DashBoardItem title="Shops" data={shopFiltered} />
         <div className="view-all">
-          <span>View All</span>
+          <span onClick={() => history.push("/admin/admin-all-shops")}>
+            View All
+          </span>
         </div>
       </div>
     </>

@@ -3,6 +3,7 @@ import Search from "../../components/Search/Search";
 import Button from "../../components/Button/Button";
 import Card from "../../components/Card/Card";
 import { firebaseDatabase } from "../../firebase/config";
+import LazyLoad from "react-lazy-load";
 import "./adminallmalls.css";
 
 function AdminAllMalls({ history }) {
@@ -55,13 +56,16 @@ function AdminAllMalls({ history }) {
           ? "loading..."
           : filterMalls.length
           ? filterMalls.map((mall) => (
-              <Card
-                key={mall.id}
-                image={mall.mallImage.imageUrl}
-                heading={mall.mallName}
-                subHeading={mall.mallAddress}
-                onClickDetail={() => history.push(`/mall-detail/${mall.id}`)}
-              />
+              <LazyLoad key={mall.id} height={300} offsetHorizontal={50}>
+                <Card
+                  image={mall.mallImage.imageUrl}
+                  heading={mall.mallName}
+                  subHeading={mall.mallAddress}
+                  onClickDetail={() =>
+                    history.push(`/admin/mall-detail/${mall.id}`)
+                  }
+                />
+              </LazyLoad>
             ))
           : "No any data to show"}
       </div>

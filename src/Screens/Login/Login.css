@@ -1,0 +1,30 @@
+.login-container {
+  display: flex;
+  margin: 40px, auto;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.input-field {
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* align-items: center; */
+}
+
+.input-field input {
+  padding: 10px 16px;
+  width: 100%;
+  border-radius: 8px;
+
+  background: #e5e2e2;
+  outline: none;
+  border: none;
+  margin-top: 10px;
+}
+
+.errors {
+  color: red;
+}

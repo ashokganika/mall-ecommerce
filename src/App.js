@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import ErrorBoundary from "./components/ErrorBoundry";
 import store from "./redux/store";
 import { ToastContainer } from "react-toastify";
@@ -12,7 +12,26 @@ import AdminAllMalls from "./Screens/AdminAllMalls/AdminAllMalls";
 import AdminShopDetail from "./Screens/AdminShopDetail/AdminShopDetail";
 import EditShop from "./Screens/EditShop/EditShop";
 import HomePage from "./Screens/HomePage/HomePage";
+import Login from "./Screens/Login/Login";
 import "react-toastify/dist/ReactToastify.css";
+import AdminAllShops from "./Screens/AdminAllShops/AdminAllShops";
+
+const ProtectedRoute = ({ component: Component, ...rest }) => {
+  return (
+    <Route
+      path={rest.path}
+      render={(props) =>
+        localStorage.getItem("admin") ? (
+          <div>
+            <Component {...props}></Component>
+          </div>
+        ) : (
+          <Redirect to="/login"></Redirect>
+        )
+      }
+    ></Route>
+  );
+};
 
 function App() {
   return (
@@ -22,13 +41,24 @@ function App() {
           <BrowserRouter>
             <Switch>
               <Route exact path="/" component={HomePage} />
-              <Route exact path="/admin/dashboard" component={AdminDashBoard} />
+              <Route exact path="/login" component={Login} />
+
+              <ProtectedRoute
+                exact
+                path="/admin/dashboard"
+                component={AdminDashBoard}
+              />
               <Route exact path="/admin/add-mall" component={AddMall} />
               {/* <Route exact path="/admin/all-shops" component={AdminAllShop} /> */}
               <Route
                 exact
                 path="/admin/admin-all-malls"
                 component={AdminAllMalls}
+              />
+              <Route
+                exact
+                path="/admin/admin-all-shops"
+                component={AdminAllShops}
               />
               <Route
                 exact

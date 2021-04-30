@@ -1,0 +1,28 @@
+.all-shop-container {
+  margin: 40px 30px;
+  /* width: 100%; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.search-all-shop {
+  display: inline-block;
+}
+
+.shop-list {
+  width: 100%;
+  margin-top: 60px;
+}
+
+.shop-list .shops-title {
+  color: #f45b5b;
+  margin: 10px 0;
+  font-weight: bold;
+}
+
+.all-shop-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}

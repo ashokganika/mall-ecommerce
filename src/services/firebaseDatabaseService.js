@@ -7,3 +7,7 @@ export const findOneMall = (id) => {
 export const findAllMall = () => {
   return firebaseDatabase.collection("mall").get();
 };
+
+export const findAdmin = () => {
+  return firebaseDatabase.collection("users").doc("LsiODH9HkfDxQJDF2Jyf").get();
+};

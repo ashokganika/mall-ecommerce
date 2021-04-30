@@ -46,7 +46,7 @@ function MallDetail({ history, match }) {
               type="button"
               text="Add Shop"
               disabled={false}
-              onClick={() => history.push(`/mall/add-shop/${mallId}`)}
+              onClick={() => history.push(`/admin/mall/add-shop/${mallId}`)}
             />
           </div>
           <DashBoardItem title="Shops" data={shops} titleId={mallId} />
@@ -55,7 +55,7 @@ function MallDetail({ history, match }) {
               type="button"
               text="Edit Mall"
               disabled={false}
-              onClick={() => history.push(`/mall/edit-mall/${mallId}`)}
+              onClick={() => history.push(`/admin/mall/edit-mall/${mallId}`)}
             />
           </div>
         </div>

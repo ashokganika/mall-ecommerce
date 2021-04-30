@@ -10,8 +10,9 @@ import { resetShopImages } from "../../redux/shopImageSlice";
 import notification from "../../utility/notification";
 
 function AddShop({ history, match }) {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [oldShops, setOldShops] = useState([]);
+  const [mallName, setMallName] = useState(null);
   const methods = useForm({
     defaultValues: {
       shops: [{ shopName: "", shopDetail: "", shopImages: [] }],
@@ -37,20 +38,19 @@ function AddShop({ history, match }) {
       .get()
       .then((doc) => {
         if (doc.exists) {
-          console.log("doc esists");
           setOldShops(doc.data().shops);
-          console.log(doc.data().shops);
+          setMallName(doc.data().mallName);
         } else {
           console.log("No such document!");
         }
       })
       .catch((error) => {
         console.log("Error getting document:", error);
-      });
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   const onSubmit = async (data) => {
-    setLoading(true);
     try {
       await Promise.all(
         photoImageState.images.map((item) =>
@@ -95,25 +95,34 @@ function AddShop({ history, match }) {
     }
   };
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {fields.map((item, index) => (
-          <ShopForm shop={item} index={index} key={item.id} />
-        ))}
-        <Button
-          type="button"
-          onClick={() => {
-            append({ shopName: "", shopDetail: "", shopImages: [] });
-          }}
-          text="Add More +"
-        />
-        <Button
-          text={loading ? "Saving..." : "Add Shop"}
-          type="submit"
-          disabled={loading}
-        />
-      </form>
-    </FormProvider>
+    <>
+      {loading ? (
+        "loading..."
+      ) : (
+        <>
+          <h2>{`Add Shop for Mall ${mallName}`}</h2>
+          <FormProvider {...methods}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              {fields.map((item, index) => (
+                <ShopForm shop={item} index={index} key={item.id} />
+              ))}
+              <Button
+                type="button"
+                onClick={() => {
+                  append({ shopName: "", shopDetail: "", shopImages: [] });
+                }}
+                text="Add More +"
+              />
+              <Button
+                text={loading ? "Saving..." : "Add Shop"}
+                type="submit"
+                disabled={loading}
+              />
+            </form>
+          </FormProvider>
+        </>
+      )}
+    </>
   );
 }
 
