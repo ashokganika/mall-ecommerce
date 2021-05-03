@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin: 35px 0;
+  margin: 35px 0 5px 0;
 }
 
 .dashboard-item-container h3 {

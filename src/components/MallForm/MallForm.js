@@ -33,7 +33,7 @@ function MallForm({ history, type, mallData }) {
     },
   });
 
-  const { control, reset } = methods;
+  const { control, reset, register } = methods;
 
   const { fields, append } = useFieldArray({
     control,
@@ -176,19 +176,19 @@ function MallForm({ history, type, mallData }) {
     <div className="mallForm">
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)}>
-          <Controller
-            control={methods.control}
-            name="mallName"
-            render={({ field }) => (
-              <TextField
-                label="Mall Name"
-                variant="filled"
-                error={!!methods.formState.errors.mallName}
-                helperText={methods?.formState?.errors?.mallName?.message}
-                {...field}
-              />
-            )}
-          />
+          <div className="input-field">
+            <label htmlFor="mallName">Mall Name</label>
+            <input
+              type="text"
+              {...register("mallName", {
+                required: { value: true, message: "mall Name is required" },
+              })}
+              id="mallName"
+            />
+            <small className="error">
+              {methods.formState.errors?.mallName?.message}
+            </small>
+          </div>
           <Controller
             control={methods.control}
             name="mallAddress"

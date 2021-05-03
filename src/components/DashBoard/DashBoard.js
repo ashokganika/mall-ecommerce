@@ -62,7 +62,7 @@ function DashBoard({ history, match }) {
         {isAdmin && (
           <Button
             text="Add New Mall"
-            onClick={() => history.push("/add-mall")}
+            onClick={() => history.push("/admin/add-mall")}
             type="button"
           />
         )}
