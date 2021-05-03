@@ -58,28 +58,42 @@ function DashBoard({ history, match }) {
           <Search placeHolder="Search Mall ..." onChange={onChangeSearch} />
         </div>
       )}
-      <div className="dashboard-container">
-        {isAdmin && (
-          <Button
-            text="Add New Mall"
-            onClick={() => history.push("/admin/add-mall")}
-            type="button"
-          />
-        )}
-        <DashBoardItem title="Malls" data={filterMall} />
-        <div
-          className="view-all"
-          onClick={() => history.push("/admin/admin-all-malls")}
-        >
-          <span>View All</span>
+      {loading ? (
+        "loading"
+      ) : filterMall.length ? (
+        <div className="dashboard-container">
+          {isAdmin && (
+            <Button
+              text="Add New Mall"
+              onClick={() => history.push("/admin/add-mall")}
+              type="button"
+            />
+          )}
+          <DashBoardItem title="Malls" data={filterMall} />
+          {filterMall?.length > 2 ? (
+            <div
+              className="view-all"
+              onClick={() => history.push("/admin/admin-all-malls")}
+            >
+              <span>View All</span>
+            </div>
+          ) : (
+            ""
+          )}
+          <DashBoardItem title="Shops" data={shopFiltered} />
+          {shopFiltered?.length > 2 ? (
+            <div className="view-all">
+              <span onClick={() => history.push("/admin/admin-all-shops")}>
+                View All
+              </span>
+            </div>
+          ) : (
+            ""
+          )}
         </div>
-        <DashBoardItem title="Shops" data={shopFiltered} />
-        <div className="view-all">
-          <span onClick={() => history.push("/admin/admin-all-shops")}>
-            View All
-          </span>
-        </div>
-      </div>
+      ) : (
+        "no data to show"
+      )}
     </>
   );
 }
