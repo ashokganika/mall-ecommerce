@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import { TextField } from "@material-ui/core";
-import {
-  useForm,
-  Controller,
-  FormProvider,
-  useFieldArray,
-} from "react-hook-form";
+import { useForm, FormProvider, useFieldArray } from "react-hook-form";
 import Button from "../Button/Button";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -18,7 +12,7 @@ import { resetShopImages } from "../../redux/shopImageSlice";
 import notification from "../../utility/notification";
 import { withRouter } from "react-router";
 
-// const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif", "image/png"];
+const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif", "image/png"];
 
 const schema = yup.object().shape({
   mallName: yup.string().required(),
@@ -33,13 +27,18 @@ function MallForm({ history, type, mallData }) {
     },
   });
 
-  const { control, reset, register } = methods;
-
+  const {
+    control,
+    reset,
+    register,
+    formState: { isSubmitted, errors },
+  } = methods;
+  console.log(errors);
   const { fields, append } = useFieldArray({
     control,
     name: "shops",
   });
-  const [mallImage, setMallImage] = useState(null);
+  const [mallImage, setMallImage] = useState("");
   const [isLoading, setLoading] = useState(false);
 
   const photoImageState = useSelector(
@@ -50,10 +49,16 @@ function MallForm({ history, type, mallData }) {
   const dispatch = useDispatch();
 
   const handleMallImageChange = (e) => {
-    setMallImage(e.target.files[0]);
+    console.log(e.target.files[0].type);
+    if (SUPPORTED_FORMATS.includes(e.target.files[0].type)) {
+      setMallImage(e.target.files[0]);
+    } else {
+      setMallImage("");
+    }
   };
 
   const onSubmit = async (data) => {
+    if (mallImage === "") return;
     setLoading(true);
     if (type === "Add") {
       try {
@@ -101,7 +106,7 @@ function MallForm({ history, type, mallData }) {
         reset();
         setMallImage(null);
         dispatch(resetShopImages());
-        history.push("/dashboard");
+        history.push("/admin/dashboard");
       } catch (error) {
         console.log(error);
         notification.showError("could not add the mall...please try again");
@@ -189,22 +194,26 @@ function MallForm({ history, type, mallData }) {
               {methods.formState.errors?.mallName?.message}
             </small>
           </div>
-          <Controller
-            control={methods.control}
-            name="mallAddress"
-            render={({ field }) => (
-              <TextField
-                label="Mall Address"
-                error={!!methods.formState.errors.mallAddress}
-                helperText={methods?.formState?.errors?.mallAddress?.message}
-                variant="filled"
-                {...field}
-              />
-            )}
-          />
-
-          <input type="file" onChange={handleMallImageChange} />
-          <small>{methods.formState.errors?.mallImage?.message}</small>
+          <div className="input-field">
+            <label htmlFor="mallAddress">Mall Address</label>
+            <input
+              type="text"
+              {...register("mallAddress", {
+                required: { value: true, message: "mall Address is required" },
+              })}
+              id="mallAddress"
+            />
+            <small className="error">
+              {methods.formState.errors?.mallAddress?.message}
+            </small>
+          </div>
+          <div className="input-field">
+            <label htmlFor="mallImage">Mall Image</label>
+            <input type="file" onChange={handleMallImageChange} />
+            <small className="error">
+              {isSubmitted && mallImage === "" && "invalid image format"}
+            </small>
+          </div>
           <hr />
           <h2>Add shops</h2>
           {fields.map((item, index) => (
@@ -219,7 +228,7 @@ function MallForm({ history, type, mallData }) {
               text="Add More shops"
             />
           )}
-
+          <hr />
           <hr />
           <Button
             text={isLoading ? "Saving..." : `${type}`}

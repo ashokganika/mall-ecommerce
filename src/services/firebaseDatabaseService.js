@@ -11,3 +11,7 @@ export const findAllMall = () => {
 export const findAdmin = () => {
   return firebaseDatabase.collection("users").doc("LsiODH9HkfDxQJDF2Jyf").get();
 };
+
+export const deleteMall = (id) => {
+  return firebaseDatabase.collection("mall").doc(id).delete();
+};

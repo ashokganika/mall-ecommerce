@@ -8,6 +8,7 @@ import ShopForm from "../../components/ShopForm/ShopForm";
 import { firebaseDatabase, firebaseStore } from "../../firebase/config";
 import { resetShopImages } from "../../redux/shopImageSlice";
 import notification from "../../utility/notification";
+import "./AddShop.css";
 
 function AddShop({ history, match }) {
   const [loading, setLoading] = useState(true);
@@ -18,7 +19,13 @@ function AddShop({ history, match }) {
       shops: [{ shopName: "", shopDetail: "", shopImages: [] }],
     },
   });
-  const { control, handleSubmit, reset } = methods;
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = methods;
+
   const { fields, append } = useFieldArray({
     control,
     name: "shops",
@@ -99,12 +106,17 @@ function AddShop({ history, match }) {
       {loading ? (
         "loading..."
       ) : (
-        <>
+        <div className="add-shop-container">
           <h2>{`Add Shop for Mall ${mallName}`}</h2>
           <FormProvider {...methods}>
             <form onSubmit={handleSubmit(onSubmit)}>
               {fields.map((item, index) => (
-                <ShopForm shop={item} index={index} key={item.id} />
+                <ShopForm
+                  shop={item}
+                  index={index}
+                  key={item.id}
+                  error={errors?.shops?.length && errors?.shops[index]}
+                />
               ))}
               <Button
                 type="button"
@@ -113,6 +125,9 @@ function AddShop({ history, match }) {
                 }}
                 text="Add More +"
               />
+              <hr />
+              <hr />
+
               <Button
                 text={loading ? "Saving..." : "Add Shop"}
                 type="submit"
@@ -120,7 +135,7 @@ function AddShop({ history, match }) {
               />
             </form>
           </FormProvider>
-        </>
+        </div>
       )}
     </>
   );

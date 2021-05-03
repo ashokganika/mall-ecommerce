@@ -4,7 +4,11 @@ import Button from "../../components/Button/Button";
 import Card from "../../components/Card/Card";
 import { firebaseDatabase } from "../../firebase/config";
 import LazyLoad from "react-lazy-load";
+import { removeMallImages } from "../../services/firebaseStoreService";
+import { deleteMall } from "../../services/firebaseDatabaseService";
+import notification from "../../utility/notification";
 import "./adminallmalls.css";
+import allImagesFromMall from "../../utility/allImagesFromMall";
 
 function AdminAllMalls({ history }) {
   const [malls, setMalls] = useState([]);
@@ -35,6 +39,20 @@ function AdminAllMalls({ history }) {
       .finally(() => setLoading(false));
   }, []);
 
+  const handleRemoveCardMall = (e, mallId) => {
+    const mallTobeDeleted = malls.find((mall) => mall.id === mallId);
+    deleteMall(mallId)
+      .then((res) => {
+        const allImg = allImagesFromMall(mallTobeDeleted);
+        removeMallImages(allImg);
+        notification.showSuccess("sucessfully deleted");
+        setMalls([...malls.filter((mall) => mall.id !== mallId)]);
+        setFilterMalls([...malls.filter((mall) => mall.id !== mallId)]);
+      })
+      .catch((err) => notification.showError("could not delete try again"));
+    e.stopPropagation();
+  };
+
   return (
     <div className="admin-all-malls">
       <div className="search-comp">
@@ -44,10 +62,11 @@ function AdminAllMalls({ history }) {
         <Button
           type="button"
           text="Add New Mall"
-          onClick={() => history.push("/add-mall")}
+          onClick={() => history.push("/admin/add-mall")}
           disabled={false}
         />
       </div>
+
       <div className="allmall-heading">
         <p> Malls</p>
       </div>
@@ -64,6 +83,7 @@ function AdminAllMalls({ history }) {
                   onClickDetail={() =>
                     history.push(`/admin/mall-detail/${mall.id}`)
                   }
+                  handleRemoveCard={(e) => handleRemoveCardMall(e, mall.id)}
                 />
               </LazyLoad>
             ))

@@ -4,9 +4,9 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { addShopImage, deleteShopImage } from "../../redux/shopImageSlice";
 import "./shopForm.css";
 
-function ShopForm({ index, type, shop }) {
+function ShopForm({ index, type, shop, error }) {
   const { register } = useFormContext();
-
+  console.log(error, "fdfd");
   const dispatch = useDispatch();
   const photoImageState = useSelector(
     (state) => state.shopImageReducer,
@@ -15,7 +15,6 @@ function ShopForm({ index, type, shop }) {
 
   const handleChangeFile = (e, id) => {
     const { files } = e.target;
-
     dispatch(addShopImage({ id: id, images: [...files] }));
   };
 
@@ -25,21 +24,31 @@ function ShopForm({ index, type, shop }) {
   return (
     <>
       <div className="shopformContainer">
-        <input
-          type="text"
-          {...register(`shops[${index}].shopName`, { required: true })}
-        />
-        <textarea
-          {...register(`shops[${index}].shopDetail`, { required: true })}
-        />
-        <input
-          type="file"
-          multiple
-          onChange={(e) => handleChangeFile(e, index)}
-        />
-        {type === "Addd" && (
+        <div className="input-field">
+          <label htmlFor="">Shop Name</label>
+          <input
+            type="text"
+            {...register(`shops[${index}].shopName`, {
+              required: { value: true, message: "shop name required" },
+            })}
+          />
+          <small className="error">{error?.shopName?.message}</small>
+        </div>
+        <div className="input-field">
+          <label htmlFor="">Shop Description</label>
+          <textarea {...register(`shops[${index}].shopDetail`)} />
+        </div>
+        <div className="input-field">
+          <label htmlFor="">Add Shop Images</label>
+          <input
+            type="file"
+            multiple
+            onChange={(e) => handleChangeFile(e, index)}
+          />
+
           <small className="error">First image will be thumbnail</small>
-        )}
+        </div>
+
         {photoImageState?.images[index]?.images?.map((file, i) => {
           return (
             <div key={i} className="image-detail-action">
@@ -54,6 +63,7 @@ function ShopForm({ index, type, shop }) {
           );
         })}
       </div>
+      <hr></hr>
       <hr></hr>
     </>
   );

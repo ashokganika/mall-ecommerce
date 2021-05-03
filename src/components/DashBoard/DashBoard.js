@@ -58,42 +58,45 @@ function DashBoard({ history, match }) {
           <Search placeHolder="Search Mall ..." onChange={onChangeSearch} />
         </div>
       )}
-      {loading ? (
-        "loading"
-      ) : filterMall.length ? (
-        <div className="dashboard-container">
-          {isAdmin && (
-            <Button
-              text="Add New Mall"
-              onClick={() => history.push("/admin/add-mall")}
-              type="button"
-            />
-          )}
-          <DashBoardItem title="Malls" data={filterMall} />
-          {filterMall?.length > 2 ? (
-            <div
-              className="view-all"
-              onClick={() => history.push("/admin/admin-all-malls")}
-            >
-              <span>View All</span>
-            </div>
-          ) : (
-            ""
-          )}
-          <DashBoardItem title="Shops" data={shopFiltered} />
-          {shopFiltered?.length > 2 ? (
-            <div className="view-all">
-              <span onClick={() => history.push("/admin/admin-all-shops")}>
-                View All
-              </span>
-            </div>
-          ) : (
-            ""
-          )}
-        </div>
-      ) : (
-        "no data to show"
-      )}
+
+      <div className="dashboard-container">
+        {isAdmin && (
+          <Button
+            text="Add New Mall"
+            onClick={() => history.push("/admin/add-mall")}
+            type="button"
+          />
+        )}
+        {loading ? (
+          "loading"
+        ) : filterMall.length ? (
+          <>
+            <DashBoardItem title="Malls" data={filterMall} />
+            {filterMall?.length > 2 ? (
+              <div
+                className="view-all"
+                onClick={() => history.push("/admin/admin-all-malls")}
+              >
+                <span>View All</span>
+              </div>
+            ) : (
+              ""
+            )}
+            <DashBoardItem title="Shops" data={shopFiltered} />
+            {shopFiltered?.length > 2 ? (
+              <div className="view-all">
+                <span onClick={() => history.push("/admin/admin-all-shops")}>
+                  View All
+                </span>
+              </div>
+            ) : (
+              ""
+            )}
+          </>
+        ) : (
+          "no data to show"
+        )}
+      </div>
     </>
   );
 }

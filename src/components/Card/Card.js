@@ -2,13 +2,17 @@ import React from "react";
 import { useRouteMatch } from "react-router";
 import "./card.css";
 
-function Card({ onClickDetail, image, heading, subHeading, id, mallId }) {
+function Card({
+  onClickDetail,
+  image,
+  heading,
+  subHeading,
+  id,
+  mallId,
+  handleRemoveCard,
+}) {
   const route = useRouteMatch();
   const isAdmin = route.url.split("/")[1] === "admin";
-  const handleRemoveCard = (e) => {
-    console.log("removed");
-    e.stopPropagation();
-  };
 
   return (
     <div

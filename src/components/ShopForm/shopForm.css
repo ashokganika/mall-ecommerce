@@ -6,12 +6,23 @@
 .shopformContainer {
   display: flex;
   flex-direction: column;
+  margin-bottom: 20px;
 }
 
 input {
   padding: 12px 16px;
   border: none;
   border-radius: 8px;
-  background: #e5e2e2;
-  outline: n;
+  background: #eeecec;
+  outline: none;
+  text-decoration: none;
+}
+
+textarea {
+  min-height: 100px;
+  border-radius: 8px;
+  border: none;
+  background: #eeecec;
+  outline: none;
+  text-decoration: none;
 }
