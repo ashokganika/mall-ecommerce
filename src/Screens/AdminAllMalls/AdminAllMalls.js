@@ -7,8 +7,8 @@ import LazyLoad from "react-lazy-load";
 import { removeMallImages } from "../../services/firebaseStoreService";
 import { deleteMall } from "../../services/firebaseDatabaseService";
 import notification from "../../utility/notification";
-import "./adminallmalls.css";
 import allImagesFromMall from "../../utility/allImagesFromMall";
+import "./adminallmalls.css";
 
 function AdminAllMalls({ history }) {
   const [malls, setMalls] = useState([]);

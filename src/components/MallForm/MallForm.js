@@ -90,7 +90,7 @@ function MallForm({ history, type, mallData }) {
         data.shops = data.shops.map((item, i) => ({
           ...item,
           id: uuid(),
-          shopsImages: url[i].map((items, index) => ({
+          shopsImages: url[i]?.map((items, index) => ({
             url: items,
             urlName: photoImageState.images[i].images[index].name,
           })),

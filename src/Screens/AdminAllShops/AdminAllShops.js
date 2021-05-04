@@ -2,13 +2,21 @@ import React, { useEffect, useState } from "react";
 import LazyLoad from "react-lazy-load";
 import Card from "../../components/Card/Card";
 import Search from "../../components/Search/Search";
-import { findAllMall } from "../../services/firebaseDatabaseService";
+import {
+  deleteShopFromMall,
+  findAllMall,
+} from "../../services/firebaseDatabaseService";
+import { removeShopImagefromMallShop } from "../../services/firebaseStoreService";
+import notification from "../../utility/notification";
 import "./AdminAllShop.css";
 
 function AdminAllShops({ history }) {
   const [loading, setLoading] = useState(true);
   const [allShops, setAllShops] = useState([]);
+  const [allMalls, setAllMalls] = useState([]);
+
   const [filteredShops, setFilteredShops] = useState([]);
+  console.log(filteredShops);
 
   const handleSearchShopChange = (e) => {
     if (e.target.value) {
@@ -25,6 +33,7 @@ function AdminAllShops({ history }) {
         snapShot.forEach((snap) => {
           mallsDoc.push({ id: snap.id, shops: snap.data().shops });
         });
+        setAllMalls(mallsDoc);
         const allShops = mallsDoc.reduce((shopArr, mall) => {
           const oneMallShops = mall.shops.reduce((shop, item) => {
             shop.push({ ...item, mallId: mall.id });
@@ -34,7 +43,6 @@ function AdminAllShops({ history }) {
           return shopArr;
         }, []);
 
-        // console.log(allShops);
         setFilteredShops(allShops);
         setAllShops(allShops);
       })
@@ -42,8 +50,27 @@ function AdminAllShops({ history }) {
       .finally(() => setLoading(false));
   }, []);
   const onClickDetail = (mallId, shopId) => {
-    // console.log("show shop detail ");
     history.push(`/admin/shop-detail/${mallId}/${shopId}`);
+  };
+
+  const handleRemoveCardShop = (e, mallId, shopId) => {
+    const shopToBeDeleted = allShops.find((shop) => shop.id === shopId);
+    const shopAllImages = shopToBeDeleted.shopsImages.map(
+      (item) => item.urlName
+    );
+    const { shops } = allMalls.find((mall) => mall.id === mallId);
+    const newShops = shops.filter((shop) => shop.id !== shopId);
+
+    deleteShopFromMall(mallId, newShops)
+      .then((res) => {
+        removeShopImagefromMallShop(shopAllImages);
+        notification.showSuccess("shop deleted sucessfully");
+        setFilteredShops([...allShops.filter((shop) => shop.id !== shopId)]);
+        setAllShops([...allShops.filter((shop) => shop.id !== shopId)]);
+      })
+      .catch((err) => notification.showError("could not delete shops"));
+
+    e.stopPropagation();
   };
 
   return (
@@ -68,6 +95,9 @@ function AdminAllShops({ history }) {
                     id={shop.id}
                     mallId={shop.mallId}
                     onClickDetail={() => onClickDetail(shop.mallId, shop.id)}
+                    handleRemoveCard={(e) =>
+                      handleRemoveCardShop(e, shop.mallId, shop.id)
+                    }
                   />
                 </LazyLoad>
               ))

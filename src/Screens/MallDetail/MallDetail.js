@@ -5,6 +5,8 @@ import DashBoardItem from "../../components/DashBoardItem/DashBoardItem";
 import { findOneMall } from "../../services/firebaseDatabaseService";
 import "./mallDetail.css";
 import notification from "../../utility/notification";
+import { useDispatch } from "react-redux";
+import { getAllMalls } from "../../redux/allMallsSlice";
 
 function MallDetail({ history, match }) {
   const { mallId } = match.params;
@@ -13,13 +15,16 @@ function MallDetail({ history, match }) {
 
   const { mallName, mallAddress, shops } = mall;
 
+  const dispatch = useDispatch();
+  console.log(mall);
+
   useEffect(() => {
+    dispatch(getAllMalls());
     const findMall = async () => {
       try {
         const mall = await findOneMall(mallId);
         if (mall.exists) {
-          console.log(mall.data(), mall.id);
-          setMall({ ...mall.data() });
+          setMall({ ...mall.data(), mallId: mall.id });
         } else {
           notification.showInfo("no such mall");
         }
@@ -49,15 +54,24 @@ function MallDetail({ history, match }) {
               onClick={() => history.push(`/admin/mall/add-shop/${mallId}`)}
             />
           </div>
-          <DashBoardItem title="Shops" data={shops} titleId={mallId} />
-          <div className="add-shopbtn">
-            <Button
-              type="button"
-              text="Edit Mall"
-              disabled={false}
-              onClick={() => history.push(`/admin/mall/edit-mall/${mallId}`)}
-            />
-          </div>
+          {shops.length ? (
+            <>
+              {" "}
+              <DashBoardItem title="Shops" data={shops} titleId={mallId} />
+              <div className="add-shopbtn">
+                <Button
+                  type="button"
+                  text="Edit Mall"
+                  disabled={false}
+                  onClick={() =>
+                    history.push(`/admin/mall/edit-mall/${mallId}`)
+                  }
+                />
+              </div>
+            </>
+          ) : (
+            "no shops to show"
+          )}
         </div>
       )}
     </>

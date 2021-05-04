@@ -3,12 +3,24 @@ import { withRouter } from "react-router";
 import Card from "../Card/Card";
 import notification from "../../utility/notification";
 import allImagesFromMall from "../../utility/allImagesFromMall";
-
+import {
+  deleteMall,
+  deleteShopFromMall,
+} from "../../services/firebaseDatabaseService";
+import {
+  removeMallImages,
+  removeShopImagefromMallShop,
+} from "../../services/firebaseStoreService";
 import "./DashBoardItem.css";
+import { shallowEqual, useSelector } from "react-redux";
 
 function DashBoardItem({ title, history, data, titleId }) {
+  const allMallsFromStore = useSelector(
+    (state) => state.allMallsReducer,
+    shallowEqual
+  );
+
   const onClick = (ids, mallId) => {
-    console.log(ids, mallId);
     history.push(`/admin/shop-detail/${titleId || mallId}/${ids}`);
   };
 
@@ -23,10 +35,29 @@ function DashBoardItem({ title, history, data, titleId }) {
         const allImg = allImagesFromMall(mallTobeDeleted);
         removeMallImages(allImg);
         notification.showSuccess("sucessfully deleted");
-        // setMalls([...malls.filter((mall) => mall.id !== mallId)]);
-        // setFilterMalls([...malls.filter((mall) => mall.id !== mallId)]);
       })
       .catch((err) => notification.showError("could not delete try again"));
+    e.stopPropagation();
+  };
+
+  const handleRemoveCardShop = (e, shopId, mallId) => {
+    const mallIdentity = mallId || titleId;
+    const mall = allMallsFromStore.malls.find(
+      (item) => item.id === mallIdentity
+    );
+    console.log("object", mall, mallIdentity, shopId);
+    const shopToBeDeleted = mall.shops.find((shop) => shop.id === shopId);
+    const allImagesFromShop = shopToBeDeleted.shopsImages.map(
+      (item) => item.urlName
+    );
+    const newShop = mall.shops.filter((shop) => shop.id !== shopId);
+
+    deleteShopFromMall(mallIdentity, newShop)
+      .then((res) => {
+        removeShopImagefromMallShop(allImagesFromShop);
+        notification.showSuccess("deleted shop sucessfully");
+      })
+      .catch((err) => notification.showWarning("could not deletd shop"));
     e.stopPropagation();
   };
   return (
@@ -42,6 +73,7 @@ function DashBoardItem({ title, history, data, titleId }) {
               image={shopsImages && shopsImages[0]?.url}
               id={id}
               mallId={mallId}
+              handleRemoveCard={(e) => handleRemoveCardShop(e, id, mallId)}
             />
           ))}
         {title === "Malls" &&

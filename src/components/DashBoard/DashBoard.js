@@ -7,11 +7,15 @@ import DashBoardItem from "../DashBoardItem/DashBoardItem";
 import Search from "../Search/Search";
 import notification from "../../utility/notification";
 import "./dashboard.css";
+import { getAllMalls } from "../../redux/allMallsSlice";
+import { useDispatch } from "react-redux";
 
 function DashBoard({ history, match }) {
   const [stateMall, setStateMall] = useState([]);
   const [filterMall, setStateFilteredMall] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const dispatch = useDispatch();
 
   const isAdmin = match.url.split("/")[1] === "admin";
 
@@ -33,6 +37,7 @@ function DashBoard({ history, match }) {
   }, []);
 
   useEffect(() => {
+    dispatch(getAllMalls());
     const findMall = async () => {
       try {
         const malls = await findAllMall();

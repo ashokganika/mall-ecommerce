@@ -15,3 +15,7 @@ export const findAdmin = () => {
 export const deleteMall = (id) => {
   return firebaseDatabase.collection("mall").doc(id).delete();
 };
+
+export const deleteShopFromMall = (id, shops) => {
+  return firebaseDatabase.collection("mall").doc(id).update({ shops });
+};
