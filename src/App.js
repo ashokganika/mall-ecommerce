@@ -82,7 +82,7 @@ function App() {
               />
               <Route
                 exact
-                path="/mall/edit-mall/:mallId"
+                path="/admin/mall/edit-mall/:mallId"
                 component={EditMall}
               />
             </Switch>

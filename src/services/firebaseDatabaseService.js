@@ -19,3 +19,10 @@ export const deleteMall = (id) => {
 export const deleteShopFromMall = (id, shops) => {
   return firebaseDatabase.collection("mall").doc(id).update({ shops });
 };
+
+export const editMall = (mall, id) => {
+  return firebaseDatabase
+    .collection("mall")
+    .doc(id)
+    .set({ ...mall });
+};

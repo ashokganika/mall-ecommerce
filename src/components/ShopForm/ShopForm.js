@@ -6,7 +6,6 @@ import "./shopForm.css";
 
 function ShopForm({ index, type, shop, error }) {
   const { register } = useFormContext();
-  console.log(error, "fdfd");
   const dispatch = useDispatch();
   const photoImageState = useSelector(
     (state) => state.shopImageReducer,

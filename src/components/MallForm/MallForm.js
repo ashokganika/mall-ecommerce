@@ -11,6 +11,7 @@ import { firebaseDatabase, firebaseStore } from "../../firebase/config";
 import { resetShopImages } from "../../redux/shopImageSlice";
 import notification from "../../utility/notification";
 import { withRouter } from "react-router";
+import { editMall } from "../../services/firebaseDatabaseService";
 
 const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif", "image/png"];
 
@@ -19,7 +20,7 @@ const schema = yup.object().shape({
   mallAddress: yup.string().required(),
 });
 
-function MallForm({ history, type, mallData }) {
+function MallForm({ history, type, mallData, mallId }) {
   const methods = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -33,7 +34,7 @@ function MallForm({ history, type, mallData }) {
     register,
     formState: { isSubmitted, errors },
   } = methods;
-  console.log(errors);
+
   const { fields, append } = useFieldArray({
     control,
     name: "shops",
@@ -45,11 +46,11 @@ function MallForm({ history, type, mallData }) {
     (state) => state.shopImageReducer,
     shallowEqual
   );
+  console.log(photoImageState.images);
 
   const dispatch = useDispatch();
 
   const handleMallImageChange = (e) => {
-    console.log(e.target.files[0].type);
     if (SUPPORTED_FORMATS.includes(e.target.files[0].type)) {
       setMallImage(e.target.files[0]);
     } else {
@@ -58,9 +59,9 @@ function MallForm({ history, type, mallData }) {
   };
 
   const onSubmit = async (data) => {
-    if (mallImage === "") return;
     setLoading(true);
     if (type === "Add") {
+      if (mallImage === "") return;
       try {
         await firebaseStore.ref(mallImage.name).put(mallImage);
 
@@ -108,13 +109,11 @@ function MallForm({ history, type, mallData }) {
         dispatch(resetShopImages());
         history.push("/admin/dashboard");
       } catch (error) {
-        console.log(error);
         notification.showError("could not add the mall...please try again");
       } finally {
         setLoading(false);
       }
     } else if (type === "Edit") {
-      setLoading(false);
       try {
         if (mallImage) {
           await firebaseStore.ref(mallImage.name).put(mallImage);
@@ -146,33 +145,45 @@ function MallForm({ history, type, mallData }) {
               )
             )
           );
+
           const structuredUrl = url.map((item, index) => ({
             id: photoImageState.images[index].id,
-            url: url[index],
+            url: url[index].map((item, i) => ({
+              url: item,
+              urlName: photoImageState.images[index].images[i].name,
+            })),
           }));
-
-          data.shops = structuredUrl.map((u, i) =>
-            data.shops.map((shop, index) =>
-              u.id === index
+          structuredUrl.forEach((url) => {
+            data.shops = mallData.shops.map((shop, index) =>
+              url.id === index
                 ? {
                     ...shop,
-                    id: mallData.shops[index].id,
-                    shopImages: [
+                    shopName: data.shops[index].shopName,
+                    shopDetail: data.shops[index].shopDetail,
+                    shopsImages: [
                       ...mallData.shops[index].shopsImages,
-                      ...structuredUrl[i].url,
+                      ...url.url,
                     ],
                   }
                 : {
                     ...shop,
-                    id: mallData.shops[index].id,
-                    shopImages: [...mallData.shops[index].shopsImages],
+                    shopName: data.shops[index].shopName,
+                    shopDetail: data.shops[index].shopDetail,
                   }
-            )
-          );
+            );
+          });
           console.log(data);
+          await editMall(data, mallId);
+          setMallImage(null);
+          dispatch(resetShopImages());
+          notification.showSuccess("edited mall done");
+          history.goBack();
         }
       } catch (error) {
         console.log("errrorobject", error);
+      } finally {
+        setLoading(false);
+        console.log(data);
       }
     }
   };
@@ -190,9 +201,7 @@ function MallForm({ history, type, mallData }) {
               })}
               id="mallName"
             />
-            <small className="error">
-              {methods.formState.errors?.mallName?.message}
-            </small>
+            <small className="error">{errors?.mallName?.message}</small>
           </div>
           <div className="input-field">
             <label htmlFor="mallAddress">Mall Address</label>
@@ -203,15 +212,16 @@ function MallForm({ history, type, mallData }) {
               })}
               id="mallAddress"
             />
-            <small className="error">
-              {methods.formState.errors?.mallAddress?.message}
-            </small>
+            <small className="error">{errors?.mallAddress?.message}</small>
           </div>
           <div className="input-field">
             <label htmlFor="mallImage">Mall Image</label>
             <input type="file" onChange={handleMallImageChange} />
             <small className="error">
-              {isSubmitted && mallImage === "" && "invalid image format"}
+              {type === "Add" &&
+                isSubmitted &&
+                mallImage === "" &&
+                "invalid image format"}
             </small>
           </div>
           <hr />
