@@ -10,11 +10,11 @@ import AddShop from "./Screens/AddShop/AddShop";
 import EditMall from "./Screens/EditMall/EditMall";
 import AdminAllMalls from "./Screens/AdminAllMalls/AdminAllMalls";
 import AdminShopDetail from "./Screens/AdminShopDetail/AdminShopDetail";
-import EditShop from "./Screens/EditShop/EditShop";
 import HomePage from "./Screens/HomePage/HomePage";
 import Login from "./Screens/Login/Login";
 import "react-toastify/dist/ReactToastify.css";
 import AdminAllShops from "./Screens/AdminAllShops/AdminAllShops";
+import AdminEditShop from "./Screens/AdminEditShop/AdminEditShop";
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   return (
@@ -49,7 +49,7 @@ function App() {
                 component={AdminDashBoard}
               />
               <Route exact path="/admin/add-mall" component={AddMall} />
-              {/* <Route exact path="/admin/all-shops" component={AdminAllShop} /> */}
+
               <Route
                 exact
                 path="/admin/admin-all-malls"
@@ -72,8 +72,8 @@ function App() {
               />
               <Route
                 exact
-                path="/admin/edit-shop/:mallId:/shopId"
-                component={EditShop}
+                path="/admin/edit-shop/:mallId/:shopId"
+                component={AdminEditShop}
               />
               <Route
                 exact

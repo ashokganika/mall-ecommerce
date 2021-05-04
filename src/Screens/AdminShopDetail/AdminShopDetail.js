@@ -43,7 +43,7 @@ function AdminShopDetail({ match, history }) {
           <Button
             type="button"
             text="Edit shop"
-            onClick={() => history.push(`/`)}
+            onClick={() => history.push(`/admin/edit-shop/${mallId}/${shopId}`)}
             disabled={false}
           />
           <div className="shopdetails-images">

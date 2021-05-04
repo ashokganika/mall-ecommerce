@@ -26,3 +26,7 @@ export const editMall = (mall, id) => {
     .doc(id)
     .set({ ...mall });
 };
+
+export const editShop = (mallId, shops) => {
+  return firebaseDatabase.collection("mall").doc(mallId).update({ shops });
+};
