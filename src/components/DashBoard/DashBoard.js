@@ -7,17 +7,18 @@ import Button from "../Button/Button";
 import DashBoardItem from "../DashBoardItem/DashBoardItem";
 import Search from "../Search/Search";
 import notification from "../../utility/notification";
+import Admin from "../../utility/isAdmin";
 import { getAllMalls } from "../../redux/allMallsSlice";
 import "./dashboard.css";
 
-function DashBoard({ history, match }) {
+function DashBoard({ history, match, role }) {
   const [stateMall, setStateMall] = useState([]);
   const [filterMall, setStateFilteredMall] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const dispatch = useDispatch();
 
-  const isAdmin = match.url.split("/")[1] === "admin";
+  const isAdmin = Admin(match.url);
 
   const onChangeSearch = (e) => {
     if (e.target.value) {
@@ -76,21 +77,31 @@ function DashBoard({ history, match }) {
           "loading"
         ) : filterMall.length ? (
           <>
-            <DashBoardItem title="Malls" data={filterMall} />
+            <DashBoardItem title="Malls" data={filterMall} role={role} />
             {filterMall?.length > 2 ? (
               <div
                 className="view-all"
-                onClick={() => history.push("/admin/admin-all-malls")}
+                onClick={() =>
+                  role === "admin"
+                    ? history.push("/admin/admin-all-malls")
+                    : history.push("/all-malls")
+                }
               >
                 <span>View All</span>
               </div>
             ) : (
               ""
             )}
-            <DashBoardItem title="Shops" data={shopFiltered} />
+            <DashBoardItem title="Shops" data={shopFiltered} role={role} />
             {shopFiltered?.length > 2 ? (
               <div className="view-all">
-                <span onClick={() => history.push("/admin/admin-all-shops")}>
+                <span
+                  onClick={() =>
+                    role === "admin"
+                      ? history.push("/admin/admin-all-shops")
+                      : history.push("/all-shops")
+                  }
+                >
                   View All
                 </span>
               </div>
@@ -105,5 +116,9 @@ function DashBoard({ history, match }) {
     </>
   );
 }
+
+DashBoard.defaultProps = {
+  role: "user",
+};
 
 export default withRouter(DashBoard);

@@ -1,5 +1,6 @@
 import React from "react";
 import { useRouteMatch } from "react-router";
+import Admin from "../../utility/isAdmin";
 import "./card.css";
 
 function Card({
@@ -12,7 +13,7 @@ function Card({
   handleRemoveCard,
 }) {
   const route = useRouteMatch();
-  const isAdmin = route.url.split("/")[1] === "admin";
+  const isAdmin = Admin(route.url);
 
   return (
     <div

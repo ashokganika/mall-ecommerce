@@ -14,18 +14,22 @@ import {
 import "./DashBoardItem.css";
 import { shallowEqual, useSelector } from "react-redux";
 
-function DashBoardItem({ title, history, data, titleId }) {
+function DashBoardItem({ title, history, data, titleId, role }) {
   const allMallsFromStore = useSelector(
     (state) => state.allMallsReducer,
     shallowEqual
   );
 
   const onClick = (ids, mallId) => {
-    history.push(`/admin/shop-detail/${titleId || mallId}/${ids}`);
+    role === "admin"
+      ? history.push(`/admin/shop-detail/${titleId || mallId}/${ids}`)
+      : history.push(`/shop-detail/${titleId || mallId}/${ids}`);
   };
 
   const onClickMallDetail = (mallId) => {
-    history.push(`/admin/mall-detail/${mallId}`);
+    role === "admin"
+      ? history.push(`/admin/mall-detail/${mallId}`)
+      : history.push(`/mall-detail/${mallId}`);
   };
 
   const handleRemoveCard = (e, mallId) => {
@@ -92,5 +96,9 @@ function DashBoardItem({ title, history, data, titleId }) {
     </div>
   );
 }
+
+DashBoardItem.defaultProps = {
+  role: "user",
+};
 
 export default withRouter(DashBoardItem);
