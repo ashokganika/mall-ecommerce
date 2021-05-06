@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router";
 import DetailsHeader from "../DetailsHeader/DetailsHeader";
-import { findOneMall } from "../../services/firebaseDatabaseService";
+import { editShop, findOneMall } from "../../services/firebaseDatabaseService";
 import notification from "../../utility/notification";
 import Card from "../Card/Card";
 import Button from "../Button/Button";
 import Admin from "../../utility/isAdmin";
 import "./shopdetails.css";
+import { removeShopImageFromShopDetail } from "../../services/firebaseStoreService";
 
 function AdminShopDetail({ match, history, role }) {
-  const { mallId, shopId } = match?.params;
-
   const [shop, setShop] = useState({});
+  const [mallShop, setMallShop] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const { mallId, shopId } = match?.params;
   const { shopName, shopDetail, shopsImages } = shop || {};
   const isAdmin = Admin(match.url);
 
@@ -22,6 +24,7 @@ function AdminShopDetail({ match, history, role }) {
         const mall = await findOneMall(mallId);
         if (mall.exists) {
           setShop(mall.data().shops.find((item) => item.id === shopId));
+          setMallShop(mall.data().shops);
         } else {
           notification.showInfo("no such mall and shop");
         }
@@ -34,6 +37,31 @@ function AdminShopDetail({ match, history, role }) {
     findMall();
     return findMall;
   }, [mallId, shopId]);
+
+  const handleRemoveCard = async (mallid, shopid, shopUrl, shopImgName) => {
+    const newShop = mallShop?.map((singleShop) =>
+      singleShop.id === shopid
+        ? {
+            ...singleShop,
+            shopsImages: singleShop.shopsImages.filter(
+              (img) => img.url !== shopUrl
+            ),
+          }
+        : singleShop
+    );
+    try {
+      await editShop(mallid, newShop);
+      await removeShopImageFromShopDetail(shopImgName);
+      notification.showSuccess("image of shop deleted sucessfully");
+      setShop((prev) => ({
+        ...prev,
+        shopsImages: prev.shopsImages.filter((img) => img.url !== shopUrl),
+      }));
+    } catch (error) {
+      notification.showError("could not delete...");
+    }
+    console.log("object", mallid, shopid, shopUrl, newShop);
+  };
   return (
     <>
       {loading ? (
@@ -56,7 +84,13 @@ function AdminShopDetail({ match, history, role }) {
           <div className="shopdetails-images">
             {shopsImages?.length
               ? shopsImages.map((img, index) => (
-                  <Card image={img.url} key={index} />
+                  <Card
+                    image={img.url}
+                    key={index}
+                    handleRemoveCard={() =>
+                      handleRemoveCard(mallId, shopId, img.url, img.urlName)
+                    }
+                  />
                 ))
               : "no any shop images"}
           </div>

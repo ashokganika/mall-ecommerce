@@ -14,6 +14,7 @@ function AddShop({ history, match }) {
   const [loading, setLoading] = useState(true);
   const [oldShops, setOldShops] = useState([]);
   const [mallName, setMallName] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
   const methods = useForm({
     defaultValues: {
       shops: [{ shopName: "", shopDetail: "", shopImages: [] }],
@@ -58,6 +59,7 @@ function AddShop({ history, match }) {
   }, []);
 
   const onSubmit = async (data) => {
+    setSubmitting(true);
     try {
       await Promise.all(
         photoImageState.images.map((item) =>
@@ -92,13 +94,12 @@ function AddShop({ history, match }) {
 
       reset();
       dispatch(resetShopImages());
-      notification.showSuccess("sucessfully Added Shops fro the Mall");
-      history.push("/mall-detail/hjdfgh");
+      notification.showSuccess("sucessfully Added Shops for the Mall");
+      history.push(`/admin/mall-detail/${match.params.mallId}`);
     } catch (error) {
-      console.log(error);
       notification.showError("could not add the Shops...please try again");
     } finally {
-      setLoading(false);
+      setSubmitting(false);
     }
   };
   return (
@@ -129,9 +130,9 @@ function AddShop({ history, match }) {
               <hr />
 
               <Button
-                text={loading ? "Saving..." : "Add Shop"}
+                text={submitting ? "Saving..." : "Add Shop"}
                 type="submit"
-                disabled={loading}
+                disabled={submitting}
               />
             </form>
           </FormProvider>

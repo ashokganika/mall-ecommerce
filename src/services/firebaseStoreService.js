@@ -15,3 +15,7 @@ export const removeShopImagefromMallShop = async (images) => {
     images?.map((image, i) => firebaseStore.ref(image).delete())
   );
 };
+
+export const removeShopImageFromShopDetail = async (image) => {
+  await firebaseStore.ref(image).delete();
+};
