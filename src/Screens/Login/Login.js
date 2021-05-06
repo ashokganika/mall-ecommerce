@@ -63,7 +63,7 @@ function Login() {
           />
           <small className="errors">{errors?.password?.message}</small>
         </div>
-        <Button type="submit" text="Log In" disabled={false} />
+        <Button type="submit" text="Log In" disabled={false} fullWidth={true} />
       </form>
     </div>
   );

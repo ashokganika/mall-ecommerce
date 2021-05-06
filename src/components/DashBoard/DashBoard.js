@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router";
+import { useDispatch } from "react-redux";
 import { findAllMall } from "../../services/firebaseDatabaseService";
 import AdminNavbar from "../AdminNavbar/AdminNavbar";
 import Button from "../Button/Button";
 import DashBoardItem from "../DashBoardItem/DashBoardItem";
 import Search from "../Search/Search";
 import notification from "../../utility/notification";
-import "./dashboard.css";
 import { getAllMalls } from "../../redux/allMallsSlice";
-import { useDispatch } from "react-redux";
+import "./dashboard.css";
 
 function DashBoard({ history, match }) {
   const [stateMall, setStateMall] = useState([]);

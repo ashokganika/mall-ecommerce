@@ -48,43 +48,48 @@ function App() {
                 path="/admin/dashboard"
                 component={AdminDashBoard}
               />
-              <Route exact path="/admin/add-mall" component={AddMall} />
+              <ProtectedRoute
+                exact
+                path="/admin/add-mall"
+                component={AddMall}
+              />
 
-              <Route
+              <ProtectedRoute
                 exact
                 path="/admin/admin-all-malls"
                 component={AdminAllMalls}
               />
-              <Route
+              <ProtectedRoute
                 exact
                 path="/admin/admin-all-shops"
                 component={AdminAllShops}
               />
-              <Route
+              <ProtectedRoute
                 exact
                 path="/admin/mall-detail/:mallId"
                 component={MallDetail}
               />
-              <Route
+              <ProtectedRoute
                 exact
                 path="/admin/mall/add-shop/:mallId"
                 component={AddShop}
               />
-              <Route
+              <ProtectedRoute
                 exact
                 path="/admin/edit-shop/:mallId/:shopId"
                 component={AdminEditShop}
               />
-              <Route
+              <ProtectedRoute
                 exact
                 path="/admin/shop-detail/:mallId/:shopId"
                 component={AdminShopDetail}
               />
-              <Route
+              <ProtectedRoute
                 exact
                 path="/admin/mall/edit-mall/:mallId"
                 component={EditMall}
               />
+              {/* <Route exact path='/all-malls' component={AllMalls}/> */}
             </Switch>
           </BrowserRouter>
         </ErrorBoundary>
