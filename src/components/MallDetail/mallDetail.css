@@ -5,3 +5,10 @@
 .add-shopbtn {
   margin-top: 50px;
 }
+.search-shop-container-in-mallDetail {
+  /* margin-top: 40px;
+  border: 10px solid green; */
+  margin-top: 30px;
+  text-align: center;
+  /* float: right; */
+}
