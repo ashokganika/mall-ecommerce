@@ -7,6 +7,7 @@ import Button from "../../components/Button/Button";
 import ShopForm from "../../components/ShopForm/ShopForm";
 import { firebaseDatabase, firebaseStore } from "../../firebase/config";
 import { resetShopImages } from "../../redux/shopImageSlice";
+import { isImageValid } from "../../utility/imageValidate";
 import notification from "../../utility/notification";
 import "./AddShop.css";
 
@@ -38,11 +39,11 @@ function AddShop({ history, match }) {
   );
 
   const dispatch = useDispatch();
-
+  const { mallId } = match?.params;
   useEffect(() => {
     firebaseDatabase
       .collection("mall")
-      .doc(match?.params?.mallId)
+      .doc(mallId)
       .get()
       .then((doc) => {
         if (doc.exists) {
@@ -56,10 +57,18 @@ function AddShop({ history, match }) {
         console.log("Error getting document:", error);
       })
       .finally(() => setLoading(false));
-  }, []);
+  }, [mallId]);
 
   const onSubmit = async (data) => {
     setSubmitting(true);
+
+    console.log(isImageValid(photoImageState.images), photoImageState.images);
+    if (!isImageValid(photoImageState.images)) {
+      notification.showInfo("shop must contain at least 1 image");
+      console.log("fdsaffdssd");
+      setSubmitting(false);
+      return;
+    }
     try {
       await Promise.all(
         photoImageState.images.map((item) =>
@@ -97,7 +106,9 @@ function AddShop({ history, match }) {
       notification.showSuccess("sucessfully Added Shops for the Mall");
       history.push(`/admin/mall-detail/${match.params.mallId}`);
     } catch (error) {
-      notification.showError("could not add the Shops...please try again");
+      notification.showError(
+        "Shop Must containe at least one image in each shop"
+      );
     } finally {
       setSubmitting(false);
     }

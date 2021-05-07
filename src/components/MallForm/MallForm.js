@@ -46,7 +46,6 @@ function MallForm({ history, type, mallData, mallId }) {
     (state) => state.shopImageReducer,
     shallowEqual
   );
-  console.log(photoImageState.images);
 
   const dispatch = useDispatch();
 
@@ -172,7 +171,6 @@ function MallForm({ history, type, mallData, mallId }) {
                   }
             );
           });
-          console.log(data);
           await editMall(data, mallId);
           setMallImage(null);
           dispatch(resetShopImages());
@@ -183,7 +181,6 @@ function MallForm({ history, type, mallData, mallId }) {
         console.log("errrorobject", error);
       } finally {
         setLoading(false);
-        console.log(data);
       }
     }
   };

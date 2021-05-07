@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
 import MallForm from "../../components/MallForm/MallForm";
-import { firebaseDatabase } from "../../firebase/config";
+import { findOneMall } from "../../services/firebaseDatabaseService";
 import notification from "../../utility/notification";
 import "./EditMall.css";
 
 function EditMall({ match }) {
   const [mallData, setMallData] = useState({});
   const [loading, setLoading] = useState(true);
-  const [mallId, setMallId] = useState("");
+  const [mallIds, setMallId] = useState("");
+  const { mallId } = match?.params;
+
   useEffect(() => {
-    firebaseDatabase
-      .collection("mall")
-      .doc(match.params.mallId)
-      .get()
+    findOneMall(mallId)
       .then((doc) => {
         if (doc.exists) {
           setMallData(doc.data());
@@ -23,7 +22,7 @@ function EditMall({ match }) {
       })
       .catch((err) => notification.showError("Somthing went wrong"))
       .finally(() => setLoading(false));
-  }, []);
+  }, [mallId]);
 
   return (
     <div className="edit-mall-container">
@@ -31,7 +30,7 @@ function EditMall({ match }) {
       <div className="mall-edit-form">
         {" "}
         {!loading && (
-          <MallForm type="Edit" mallData={mallData} mallId={mallId} />
+          <MallForm type="Edit" mallData={mallData} mallId={mallIds} />
         )}
       </div>
     </div>

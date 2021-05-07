@@ -111,7 +111,7 @@ function DashBoard({ history, match, role }) {
             )}
           </>
         ) : (
-          "no data to show"
+          <h3>no data to show</h3>
         )}
       </div>
     </>
