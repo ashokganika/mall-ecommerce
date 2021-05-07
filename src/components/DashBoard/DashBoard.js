@@ -10,6 +10,7 @@ import notification from "../../utility/notification";
 import Admin from "../../utility/isAdmin";
 import { getAllMalls } from "../../redux/allMallsSlice";
 import "./dashboard.css";
+import Loading from "../Loading/Loading";
 
 function DashBoard({ history, match, role }) {
   const [stateMall, setStateMall] = useState([]);
@@ -74,7 +75,7 @@ function DashBoard({ history, match, role }) {
           />
         )}
         {loading ? (
-          "loading"
+          <Loading />
         ) : filterMall.length ? (
           <>
             <DashBoardItem title="Malls" data={filterMall} role={role} />

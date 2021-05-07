@@ -8,6 +8,7 @@ import Card from "../Card/Card";
 import Button from "../Button/Button";
 import Admin from "../../utility/isAdmin";
 import "./shopdetails.css";
+import Loading from "../Loading/Loading";
 
 function AdminShopDetail({ match, history, role }) {
   const [shop, setShop] = useState({});
@@ -65,7 +66,7 @@ function AdminShopDetail({ match, history, role }) {
   return (
     <>
       {loading ? (
-        "loading"
+        <Loading />
       ) : (
         <div className="shopDetails-Container">
           <div className="shopdetail-header">
@@ -82,17 +83,19 @@ function AdminShopDetail({ match, history, role }) {
             />
           )}
           <div className="shopdetails-images">
-            {shopsImages?.length
-              ? shopsImages.map((img, index) => (
-                  <Card
-                    image={img.url}
-                    key={index}
-                    handleRemoveCard={() =>
-                      handleRemoveCard(mallId, shopId, img.url, img.urlName)
-                    }
-                  />
-                ))
-              : "no any shop images"}
+            {shopsImages?.length ? (
+              shopsImages.map((img, index) => (
+                <Card
+                  image={img.url}
+                  key={index}
+                  handleRemoveCard={() =>
+                    handleRemoveCard(mallId, shopId, img.url, img.urlName)
+                  }
+                />
+              ))
+            ) : (
+              <h2>no shops to show</h2>
+            )}
           </div>
         </div>
       )}

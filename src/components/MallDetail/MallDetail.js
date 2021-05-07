@@ -10,6 +10,7 @@ import { withRouter } from "react-router";
 import Admin from "../../utility/isAdmin";
 import Search from "../Search/Search";
 import "./mallDetail.css";
+import Loading from "../Loading/Loading";
 
 function MallDetail({ history, match, role }) {
   const { mallId } = match.params;
@@ -57,7 +58,7 @@ function MallDetail({ history, match, role }) {
   return (
     <>
       {loading ? (
-        "loading..."
+        <Loading />
       ) : (
         <div className="mall-detail">
           <DetailsHeader title={mallName} subtitle={mallAddress} />
@@ -98,7 +99,7 @@ function MallDetail({ history, match, role }) {
               )}
             </>
           ) : (
-            "no shops to show"
+            <h2>no shops to show</h2>
           )}
         </div>
       )}

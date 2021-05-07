@@ -8,8 +8,9 @@ import {
 } from "../../services/firebaseDatabaseService";
 import { removeShopImagefromMallShop } from "../../services/firebaseStoreService";
 import notification from "../../utility/notification";
-import "./AllShop.css";
 import { withRouter } from "react-router";
+import Loading from "../Loading/Loading";
+import "./AllShop.css";
 
 function AllShops({ history, role }) {
   const [loading, setLoading] = useState(true);
@@ -87,24 +88,26 @@ function AllShops({ history, role }) {
       <div className="shop-list">
         <p className="shops-title">Shops</p>
         <div className="all-shop-list">
-          {loading
-            ? "loading..."
-            : filteredShops?.length
-            ? filteredShops?.map((shop) => (
-                <LazyLoad key={shop.id} height={350} offsetHorizontal={50}>
-                  <Card
-                    image={shop.shopsImages[0].url}
-                    heading={shop.shopName}
-                    id={shop.id}
-                    mallId={shop.mallId}
-                    onClickDetail={() => onClickDetail(shop.mallId, shop.id)}
-                    handleRemoveCard={(e) =>
-                      handleRemoveCardShop(e, shop.mallId, shop.id)
-                    }
-                  />
-                </LazyLoad>
-              ))
-            : "No any shop to show"}
+          {loading ? (
+            <Loading />
+          ) : filteredShops?.length ? (
+            filteredShops?.map((shop) => (
+              <LazyLoad key={shop.id} height={350} offsetHorizontal={50}>
+                <Card
+                  image={shop.shopsImages[0].url}
+                  heading={shop.shopName}
+                  id={shop.id}
+                  mallId={shop.mallId}
+                  onClickDetail={() => onClickDetail(shop.mallId, shop.id)}
+                  handleRemoveCard={(e) =>
+                    handleRemoveCardShop(e, shop.mallId, shop.id)
+                  }
+                />
+              </LazyLoad>
+            ))
+          ) : (
+            "No any shop to show"
+          )}
         </div>
       </div>
     </div>

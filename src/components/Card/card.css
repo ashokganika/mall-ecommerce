@@ -8,6 +8,7 @@
   cursor: pointer;
   z-index: 1;
   margin-bottom: 30px;
+  margin-left: 30px;
 }
 .img {
   position: absolute;
