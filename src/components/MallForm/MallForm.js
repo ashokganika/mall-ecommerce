@@ -4,7 +4,6 @@ import Button from "../Button/Button";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import ShopForm from "../ShopForm/ShopForm";
-import "./MallForm.css";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import uuid from "react-uuid";
 import { firebaseDatabase, firebaseStore } from "../../firebase/config";
@@ -12,6 +11,7 @@ import { resetShopImages } from "../../redux/shopImageSlice";
 import notification from "../../utility/notification";
 import { withRouter } from "react-router";
 import { editMall } from "../../services/firebaseDatabaseService";
+import "./MallForm.css";
 
 const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif", "image/png"];
 

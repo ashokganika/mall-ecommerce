@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { withRouter } from "react-router";
 import LazyLoad from "react-lazy-load";
 import Card from "../Card/Card";
 import Search from "../Search/Search";
@@ -8,7 +9,6 @@ import {
 } from "../../services/firebaseDatabaseService";
 import { removeShopImagefromMallShop } from "../../services/firebaseStoreService";
 import notification from "../../utility/notification";
-import { withRouter } from "react-router";
 import Loading from "../Loading/Loading";
 import "./AllShop.css";
 

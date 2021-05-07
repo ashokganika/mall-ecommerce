@@ -1,4 +1,5 @@
 import React from "react";
+import { shallowEqual, useSelector } from "react-redux";
 import { withRouter } from "react-router";
 import Card from "../Card/Card";
 import notification from "../../utility/notification";
@@ -12,7 +13,6 @@ import {
   removeShopImagefromMallShop,
 } from "../../services/firebaseStoreService";
 import "./DashBoardItem.css";
-import { shallowEqual, useSelector } from "react-redux";
 
 function DashBoardItem({ title, history, data, titleId, role }) {
   const allMallsFromStore = useSelector(

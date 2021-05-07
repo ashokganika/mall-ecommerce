@@ -7,8 +7,8 @@ import { removeShopImageFromShopDetail } from "../../services/firebaseStoreServi
 import Card from "../Card/Card";
 import Button from "../Button/Button";
 import Admin from "../../utility/isAdmin";
-import "./shopdetails.css";
 import Loading from "../Loading/Loading";
+import "./shopdetails.css";
 
 function AdminShopDetail({ match, history, role }) {
   const [shop, setShop] = useState({});

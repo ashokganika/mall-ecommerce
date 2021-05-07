@@ -41,8 +41,8 @@ function MallDetail({ history, match, role }) {
       }
     };
     findMall();
-    return findMall;
-  }, [mallId]);
+    return () => findMall();
+  }, [mallId, dispatch]);
 
   const handleShopSearch = (e) => {
     if (e.target.value) {

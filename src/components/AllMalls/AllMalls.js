@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
+import LazyLoad from "react-lazy-load";
 import Search from "../Search/Search";
 import Button from "../Button/Button";
 import Card from "../Card/Card";
-import { firebaseDatabase } from "../../firebase/config";
-import LazyLoad from "react-lazy-load";
 import { removeMallImages } from "../../services/firebaseStoreService";
-import { deleteMall } from "../../services/firebaseDatabaseService";
+import {
+  deleteMall,
+  findAllMall,
+} from "../../services/firebaseDatabaseService";
 import notification from "../../utility/notification";
 import Admin from "../../utility/isAdmin";
 import Loading from "../Loading/Loading";
@@ -27,9 +29,7 @@ function AllMalls({ history, role, match }) {
   };
 
   useEffect(() => {
-    firebaseDatabase
-      .collection("mall")
-      .get()
+    findAllMall()
       .then((snapShot) => {
         let mallsDoc = [];
         snapShot.forEach((snap) => {

@@ -61,7 +61,6 @@ function EditShop({ mallId, shopId, shop, shops, history }) {
         const newShop = shops.map((shopItem) =>
           shopItem.id === shopId ? { ...data } : shopItem
         );
-        console.log(newShop, data, url);
         await editShop(mallId, newShop);
         notification.showSuccess("sucessfully updated shop");
         dispatch(resetShopImages());
@@ -75,7 +74,6 @@ function EditShop({ mallId, shopId, shop, shops, history }) {
         history.goBack();
       }
     } catch (error) {
-      console.log(error);
       notification.show("could not update shop");
     } finally {
       setSubmitting(false);
