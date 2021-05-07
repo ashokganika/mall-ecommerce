@@ -3,11 +3,11 @@ import { withRouter } from "react-router";
 import DetailsHeader from "../DetailsHeader/DetailsHeader";
 import { editShop, findOneMall } from "../../services/firebaseDatabaseService";
 import notification from "../../utility/notification";
+import { removeShopImageFromShopDetail } from "../../services/firebaseStoreService";
 import Card from "../Card/Card";
 import Button from "../Button/Button";
 import Admin from "../../utility/isAdmin";
 import "./shopdetails.css";
-import { removeShopImageFromShopDetail } from "../../services/firebaseStoreService";
 
 function AdminShopDetail({ match, history, role }) {
   const [shop, setShop] = useState({});
