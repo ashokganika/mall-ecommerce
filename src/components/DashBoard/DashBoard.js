@@ -9,8 +9,8 @@ import Search from "../Search/Search";
 import notification from "../../utility/notification";
 import Admin from "../../utility/isAdmin";
 import { getAllMalls } from "../../redux/allMallsSlice";
-import "./dashboard.css";
 import Loading from "../Loading/Loading";
+import "./dashboard.css";
 
 function DashBoard({ history, match, role }) {
   const [stateMall, setStateMall] = useState([]);
@@ -54,8 +54,8 @@ function DashBoard({ history, match, role }) {
       }
     };
     findMall();
-    return findMall;
-  }, []);
+    return () => findMall();
+  }, [dispatch]);
 
   return (
     <>
