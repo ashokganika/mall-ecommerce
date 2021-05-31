@@ -6,17 +6,16 @@ function AdminEditShop({ match }) {
   const [loading, setLoading] = useState(true);
   const [shop, setShop] = useState({});
   const [shops, setShops] = useState([]);
+  const { mallId, shopId } = match?.params;
 
   useEffect(() => {
     firebaseDatabase
       .collection("mall")
-      .doc(match?.params?.mallId)
+      .doc(mallId)
       .get()
       .then((doc) => {
         if (doc.exists) {
-          setShop(
-            doc.data().shops.find((shop) => shop.id === match.params.shopId)
-          );
+          setShop(doc.data().shops.find((shop) => shop.id === shopId));
           setShops(doc.data().shops);
         } else {
           console.log("No such document!");
@@ -26,7 +25,7 @@ function AdminEditShop({ match }) {
         console.log("Error getting document:", error);
       })
       .finally(() => setLoading(false));
-  }, []);
+  }, [mallId, shopId]);
   return (
     <>
       {loading ? (
